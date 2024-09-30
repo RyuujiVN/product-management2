@@ -1,8 +1,20 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Document
-    body 
-        h1 Trang danh sách sản phẩm
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+    section(class="product-list")
+        div(class="container my-3")
+            div(class="row")
+                div(class="col-12")
+                    +box-head("Danh sách sản phẩm")
+            
+            div(class="row")
+                div(class="col-4 mb-3")
+                    div(class="product-item")
+                        div(class="product-img")
+                            img(src="https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png", alt="Iphone")
+                        div(class="inner-content")
+                            h2(class="inner-title") Iphone 9
+                            p(class="inner-price-new") 80$
+                            p(class="inner-price-old") 100$
+                            span(class="inner-discount") -20%
