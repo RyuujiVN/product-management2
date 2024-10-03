@@ -9,12 +9,13 @@ block main
                     +box-head("Danh sách sản phẩm")
             
             div(class="row")
-                div(class="col-4 mb-3")
-                    div(class="product-item")
-                        div(class="product-img")
-                            img(src="https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png", alt="Iphone")
-                        div(class="inner-content")
-                            h2(class="inner-title") Iphone 9
-                            p(class="inner-price-new") 80$
-                            p(class="inner-price-old") 100$
-                            span(class="inner-discount") -20%
+                each item in products
+                    div(class="col-4 mb-3")
+                        div(class="product-item")
+                            div(class="product-img")
+                                img(src=item.thumbnail, alt=item.title)
+                            div(class="inner-content")
+                                h2(class="inner-title") #{item.title}
+                                p(class="inner-price-new") #{item.priceNew}$
+                                p(class="inner-price-old") #{item.price}$
+                                span(class="inner-discount") #{item.discountPercentage}%
