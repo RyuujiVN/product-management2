@@ -3,9 +3,20 @@ extends ../../layouts/default.pug
 block main
     h1(class="mb-4") Danh sách sản phẩm
 
-    div(class="d-flex")
-        each item in filterStatus
-            button(class=`btn btn btn-outline-success ${item.class} me-2` button-status=item.status) #{item.name}
+    div(class="get-product")
+        div(class="row")
+            div(class="col-6")
+                div(class="d-flex")
+                    each item in filterStatus
+                        button(class=`btn btn btn-outline-success ${item.class} me-2` button-status=item.status) #{item.name}
+            
+            div(class="col-6")
+                form(id="form-search")
+                    div(class="search-product input-group")
+                        input(type="text" placeholder="Nhập từ khóa..." name="keyword" class="form-control" value=keyword)
+                        button(class="btn btn-success" type="submit") Tìm kiếm
+
+                    
 
     table(class="table table-hover table-sm")
         thead 

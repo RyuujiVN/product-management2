@@ -57,3 +57,9 @@
     font-size: 14px;
 }
 /* End Button */
+
+/* Input Group */
+.search-product {
+    max-width: 300px;
+}
+/* End Input Group */
