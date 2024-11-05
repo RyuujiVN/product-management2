@@ -1,6 +1,7 @@
 const Product = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
+const paginationHelper = require("../../helpers/pagination");
 
 module.exports.index = async (req, res) => {
     let find = {
@@ -18,7 +19,14 @@ module.exports.index = async (req, res) => {
     if (search.regex) {
         find.title = search.regex;
     }
-    const products = await Product.find(find);
+
+    // Pagination
+    const pagination = paginationHelper(req.query);
+    const totalProduct = await Product.countDocuments(find);
+    const totalPage = Math.ceil(totalProduct / pagination.limitItem);
+    pagination.totalPage = totalPage;
+    // End Pagination
+    const products = await Product.find(find).limit(pagination.limitItem).skip(pagination.skip);
 
     const newProducts = products.map((item) => {
         item.priceNew = (item.price - item.price * item.discountPercentage / 100).toFixed(0);
@@ -29,6 +37,7 @@ module.exports.index = async (req, res) => {
         pageTitle: "Trang sản phẩm",
         products: newProducts,
         filterStatus: filterStatus,
-        keyword: search.keyword
+        keyword: search.keyword,
+        pagination: pagination
     });
 }

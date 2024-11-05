@@ -24,8 +24,8 @@ if (formSearch) {
     formSearch.addEventListener("submit", (e) => {
         e.preventDefault();
         const url = new URL(window.location.href);
-        const keyword = e.target.keyword.value;
-        if(keyword) {
+        const keyword = e.target.elements.keyword.value;
+        if (keyword) {
             url.searchParams.set("keyword", keyword);
         }
         else {
@@ -35,4 +35,24 @@ if (formSearch) {
     })
 }
 // End Search Product
+
+// Pagination
+const buttonPagination = document.querySelectorAll("[button-pagination]");
+console.log(buttonPagination);
+if (buttonPagination.length > 0) {
+    const url = new URL(window.location.href);
+    buttonPagination.forEach((item) => {
+        item.addEventListener("click", function () {
+            const page = this.getAttribute("button-pagination");
+            if (page) {
+                url.searchParams.set("page", page);
+            }
+            else {
+                url.searchParams.delete("page");
+            }
+            window.location.href = url.href;
+        })
+    })
+}
+// End Pagination
 
