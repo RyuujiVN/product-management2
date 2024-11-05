@@ -21,10 +21,8 @@ module.exports.index = async (req, res) => {
     }
 
     // Pagination
-    const pagination = paginationHelper(req.query);
     const totalProduct = await Product.countDocuments(find);
-    const totalPage = Math.ceil(totalProduct / pagination.limitItem);
-    pagination.totalPage = totalPage;
+    const pagination = paginationHelper(req.query, totalProduct);
     // End Pagination
     const products = await Product.find(find).limit(pagination.limitItem).skip(pagination.skip);
 
