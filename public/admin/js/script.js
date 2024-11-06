@@ -105,8 +105,16 @@ if (formChangeMulti) {
         if (checkedList.length > 0) {
             let ids = [];
             checkedList.forEach(item => {
-                const value = item.value;
-                ids.push(value);
+                const id = item.value;
+
+                if (type == "change-position") {
+                    const position = item.closest("tr").querySelector("input[name='position']").value;
+                    ids.push(`${id}-${position}`);
+                    console.log(`${id}-${position}`);
+                }
+                else {
+                    ids.push(id);
+                }
             });
             const inputIds = formChangeMulti.querySelector("input[name='ids']");
             inputIds.value = ids.join(", ");

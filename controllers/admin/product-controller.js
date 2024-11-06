@@ -25,7 +25,7 @@ module.exports.index = async (req, res) => {
     const totalProduct = await Product.countDocuments(find);
     const pagination = paginationHelper(req.query, totalProduct);
     // End Pagination
-    const products = await Product.find(find).limit(pagination.limitItem).skip(pagination.skip);
+    const products = await Product.find(find).limit(pagination.limitItem).skip(pagination.skip).sort({ position: "desc" });
 
     const newProducts = products.map((item) => {
         item.priceNew = (item.price - item.price * item.discountPercentage / 100).toFixed(0);
@@ -66,6 +66,13 @@ module.exports.changeMulti = async (req, res) => {
                 deleted: true,
                 dateDeleted: new Date()
             });
+            break;
+        case "change-position":
+            for (const item of ids) {
+                let [id, position] = item.split("-");
+                position = parseInt(position);
+                await Product.updateOne({ _id: id }, { position: position });
+            }
             break;
         default:
             break;
