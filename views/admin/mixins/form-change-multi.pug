@@ -7,8 +7,10 @@ mixin form-change-multi(path)
         div(class="d-flex align-items-start")
             div(class="form-group")
                 select(name="type" class="form-control form-select")
+                    option(disable selected) --Chọn--
                     option(value="active") Hoạt động
                     option(value="inactive") Dừng Hoạt động
+                    option(value="delete-all") Xóa tất cả
 
             div(class="form-group")
                 input(

@@ -92,6 +92,16 @@ if (formChangeMulti) {
     formChangeMulti.addEventListener("submit", function (e) {
         e.preventDefault();
         const checkedList = document.querySelectorAll("input[name='id']:checked");
+
+        const type = e.target.elements.type.value;
+        if (type == "delete-all") {
+            const isConfirm = confirm("Bạn có chắc muốn xóa những sản phẩm này?");
+
+            if (!isConfirm) {
+                return;
+            }
+        }
+
         if (checkedList.length > 0) {
             let ids = [];
             checkedList.forEach(item => {
@@ -115,12 +125,15 @@ const buttonsDelete = document.querySelectorAll("[button-delete]");
 if (buttonsDelete.length > 0) {
     const formDelete = document.querySelector("#form-delete-product");
     const path = formDelete.getAttribute("path");
+
     buttonsDelete.forEach(button => {
         button.addEventListener("click", function () {
             const isConfirm = confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?");
+
             if (isConfirm) {
                 const id = this.getAttribute("data-id");
                 const action = `${path}/${id}?_method=DELETE`;
+
                 formDelete.action = action;
                 formDelete.submit();
             }
