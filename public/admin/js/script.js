@@ -38,7 +38,6 @@ if (formSearch) {
 
 // Pagination
 const buttonPagination = document.querySelectorAll("[button-pagination]");
-console.log(buttonPagination);
 if (buttonPagination.length > 0) {
     const url = new URL(window.location.href);
     buttonPagination.forEach((item) => {
@@ -55,4 +54,60 @@ if (buttonPagination.length > 0) {
     })
 }
 // End Pagination
+
+// Check Multi
+const checkboxMulti = document.querySelector("#checkbox-multi");
+if (checkboxMulti) {
+    const inputCheckAll = document.querySelector("input[name='check-all']");
+    const inputId = document.querySelectorAll("input[name='id']");
+
+    // Check all
+    inputCheckAll.addEventListener("click", function () {
+        if (this.checked) {
+            inputId.forEach(item => {
+                item.checked = true;
+            });
+        }
+        else {
+            inputId.forEach(item => {
+                item.checked = false;
+            });
+        }
+    });
+
+    // Check one
+    inputId.forEach(input => {
+        input.addEventListener("click", function () {
+            const countChecked = checkboxMulti.querySelectorAll("input[name='id']:checked").length;
+            console.log(inputId.length);
+            inputCheckAll.checked = countChecked == inputId.length ? true : false;
+        })
+    })
+}
+// End Check Multi
+
+// Form Change Multi
+const formChangeMulti = document.querySelector("#form-change-multi");
+if (formChangeMulti) {
+    console.log(formChangeMulti);
+    formChangeMulti.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const checkedList = document.querySelectorAll("input[name='id']:checked");
+        if (checkedList.length > 0) {
+            let ids = [];
+            checkedList.forEach(item => {
+                const value = item.value;
+                ids.push(value);
+            });
+            const inputIds = formChangeMulti.querySelector("input[name='ids']");
+            inputIds.value = ids.join(", ");
+            formChangeMulti.submit();
+        }
+        else {
+            alert("Vui lòng chọn ít nhất 1 bản ghi!");
+        }
+
+    })
+}
+// End Form Change Multi
 
