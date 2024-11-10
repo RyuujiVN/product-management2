@@ -19,10 +19,15 @@ block main
     div(class="card mb-3")
         div(class="card-header") Danh sách 
             div(class="card-body")
-                +form-change-multi(`${prefixAdmin}/product/change-multi?_method=PATCH`)
+                div(class="row")
+                    div(class="col-8")
+                        +form-change-multi(`${prefixAdmin}/product/change-multi?_method=PATCH`)
+
+                    div(class="col-4")
+                        a(href=`${prefixAdmin}/product/create` class="btn btn-outline-success") + Thêm mới sản phẩm
 
                 table(
-                    class="table table-hover table-sm"
+                    class="table table-hover table-sm mt-4"
                     id="checkbox-multi"
                 )
                     thead 

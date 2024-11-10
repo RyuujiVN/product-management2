@@ -2,6 +2,7 @@ const Product = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
+const systemConfig = require("../../config/system");
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -88,4 +89,32 @@ module.exports.deleteProduct = async (req, res) => {
         dateDeleted: new Date()
     });
     res.redirect("back");
+}
+
+// [GET] /admin/products/create
+module.exports.create = (req, res) => {
+
+    res.render("admin/pages/product/create", {
+        pageTitle: "Trang tạo sản phẩm",
+    });
+}
+
+// [POST] /admin/products/create
+module.exports.createPost = async (req, res) => {
+    const newProduct = req.body;
+
+    newProduct.price = parseInt(newProduct.price);
+    newProduct.discountPercentage = parseInt(newProduct.discountPercentage);
+    newProduct.stock = parseInt(newProduct.stock);
+
+    if (newProduct.position == "") {
+        const quantity = await Product.countDocuments();
+        newProduct.position = quantity + 1;
+    }
+    else {
+        newProduct.position = parseInt(newProduct.position);
+    }
+
+    await new Product(newProduct).save();
+    res.redirect(`${systemConfig.prefixAdmin}/product`);
 }
