@@ -56,10 +56,28 @@
 .btn {
     font-size: 14px;
 }
+
 /* End Button */
 
 /* Input Group */
 .search-product {
     max-width: 300px;
 }
+
 /* End Input Group */
+
+/* Image Preview */
+.image-preview {
+    width: 150px;
+    height: auto;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.image-preview[src=""] {
+    display: none;
+}
+
+/* End Image Preview */

@@ -115,6 +115,8 @@ module.exports.createPost = async (req, res) => {
         newProduct.position = parseInt(newProduct.position);
     }
 
+    newProduct.thumbnail = `/uploads/${req.file.filename}`;
+
     await new Product(newProduct).save();
     res.redirect(`${systemConfig.prefixAdmin}/product`);
 }

@@ -150,3 +150,18 @@ if (buttonsDelete.length > 0) {
 }
 // End Delete Product
 
+// Picture Preview
+const uploadImg = document.querySelector("[upload-image]");
+if (uploadImg) {
+    const uploadImgInput = uploadImg.querySelector("[upload-img-input]");
+    const uploadImgPreview = uploadImg.querySelector("[upload-img-preview]");
+
+    uploadImgInput.addEventListener("change", (e) => {
+        const [file] = e.target.files;
+        if (file) {
+            uploadImgPreview.src = URL.createObjectURL(file);
+        }
+    })
+}
+// End Picture Preview
+
