@@ -1,0 +1,42 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+    div(class="container my-3")
+        div(class="row")
+            div(class="col-12")
+    
+                if(product.title)
+                    h1(class="mb-4") #{product.title}
+
+                if(product.price)
+                    div(class="mb-4") Giá: #{product.price}$
+
+                if(product.discountPercentage)
+                    div(class="mb-4") Giảm giá: #{product.discountPercentage}%
+
+                if(product.stock)
+                    div(class="mb-4") Còn lại: #{product.stock}
+
+                if(product.thumbnail)
+                    div(class="mb-4")
+                    img(
+                        src=product.thumbnail
+                        style="width: 100px"
+                    )
+                
+                if(product.status)
+                    div(class="mb-4")
+                        span(class="") Trạng thái: 
+                        if (product.status === "active")
+                            span(class="badge text-bg-success") Hoạt động
+                        else 
+                            span(class="badge text-bg-danger") Dừng hoạt động
+                
+                if(product.position)
+                    div(class="mb-4") Vị trí: #{product.position}
+                
+                if(product.description)
+                    div(class="mb-4") Mô tả: #{product.description}
+
+                a(href=`${prefixAdmin}/product/edit/${product.id}` class="btn btn-warning") Chỉnh sửa

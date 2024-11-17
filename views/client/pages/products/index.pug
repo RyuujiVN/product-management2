@@ -12,10 +12,16 @@ block main
                 each item in products
                     div(class="col-4 mb-3")
                         div(class="product-item")
-                            div(class="product-img")
-                                img(src=item.thumbnail, alt=item.title)
-                            div(class="inner-content")
-                                h2(class="inner-title") #{item.title}
-                                p(class="inner-price-new") #{item.priceNew}$
-                                p(class="inner-price-old") #{item.price}$
-                                span(class="inner-discount") #{item.discountPercentage}%
+                            a(href=`products/detail/${item.slug}`)
+                                div(class="product-img")
+                                img(
+                                    src=item.thumbnail 
+                                    alt=item.title 
+                                    width='300px'
+                                )
+
+                                div(class="inner-content")
+                                    h2(class="inner-title sadfsdf") #{item.title}
+                                    p(class="inner-price-new") #{item.priceNew}$
+                                    p(class="inner-price-old") #{item.price}$
+                                    span(class="inner-discount") #{item.discountPercentage}%
