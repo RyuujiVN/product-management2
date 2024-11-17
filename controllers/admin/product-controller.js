@@ -119,6 +119,8 @@ module.exports.createPost = async (req, res) => {
         newProduct.thumbnail = `/uploads/${req.file.filename}`;
     }
 
+    console.log(newProduct);
+
     await new Product(newProduct).save();
     res.redirect(`${systemConfig.prefixAdmin}/product`);
 }
@@ -161,4 +163,18 @@ module.exports.editPatch = async (req, res) => {
 
     }
     res.redirect(`${systemConfig.prefixAdmin}/product`);
+}
+
+module.exports.detail = async (req, res) => {
+    const find = {
+        deleted: false,
+        _id: req.params.id
+    }
+
+    const product = await Product.findOne(find);
+
+    res.render("admin/pages/product/detail", {
+        pageTile: product.title,
+        product: product
+    });
 }
