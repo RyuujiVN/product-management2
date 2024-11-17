@@ -3,7 +3,15 @@
 # Debug log from npm
 npm-debug.log*
 
+#misc
 .env
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
+npm-debug.log*
+/build
 # ignore additional files using core.excludesFile
 # https://git-scm.com/docs/gitignore
