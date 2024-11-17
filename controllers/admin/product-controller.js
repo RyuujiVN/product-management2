@@ -115,8 +115,50 @@ module.exports.createPost = async (req, res) => {
         newProduct.position = parseInt(newProduct.position);
     }
 
-    newProduct.thumbnail = `/uploads/${req.file.filename}`;
+    if (req.file.filename) {
+        newProduct.thumbnail = `/uploads/${req.file.filename}`;
+    }
 
     await new Product(newProduct).save();
+    res.redirect(`${systemConfig.prefixAdmin}/product`);
+}
+
+// [GET] /admin/edit/:id
+module.exports.edit = async (req, res) => {
+    try {
+        const find = {
+            deleted: false,
+            _id: req.params.id
+        }
+
+        const product = await Product.findOne(find);
+
+        res.render("admin/pages/product/edit", {
+            pageTile: "Chỉnh sửa sản phẩm",
+            product: product
+        })
+    } catch (error) {
+        res.redirect(`${systemConfig.prefixAdmin}/product`);
+    }
+}
+
+// [PATCH] /admin/edit/:id
+module.exports.editPatch = async (req, res) => {
+    const newProduct = req.body;
+
+    newProduct.price = parseInt(newProduct.price);
+    newProduct.discountPercentage = parseInt(newProduct.discountPercentage);
+    newProduct.stock = parseInt(newProduct.stock);
+    newProduct.position = parseInt(newProduct.position);
+
+    if (req.file.filename) {
+        newProduct.thumbnail = `/uploads/${req.file.filename}`;
+    }
+
+    try {
+        await Product.updateOne({ _id: req.params.id }, newProduct);
+    } catch (error) {
+
+    }
     res.redirect(`${systemConfig.prefixAdmin}/product`);
 }

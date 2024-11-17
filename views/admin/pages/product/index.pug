@@ -70,7 +70,7 @@ block main
                                     else 
                                         a(href="javascript:;" class="badge text-bg-danger" data-status=item.status data-id=item.id button-change-status) Dừng hoạt động
                                 td 
-                                    button(type="button" class="btn btn-warning btn-sm me-2 ") Sửa
+                                    a(href=`${prefixAdmin}/product/edit/${item.id}` type="button" class="btn btn-warning btn-sm me-2") Sửa
                                     button(type="button" class="btn btn-danger btn-sm" data-id=item.id button-delete) Xóa 
                 +pagination(pagination)
 
