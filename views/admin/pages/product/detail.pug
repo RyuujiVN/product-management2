@@ -21,6 +21,9 @@ block main
             src=product.thumbnail
             style="width: 100px"
         )
+
+    if(product.discription)
+        div(class="mb-4") Mô tả: #{product.discription}
     
     if(product.status)
         div(class="mb-4")
@@ -34,7 +37,7 @@ block main
         div(class="mb-4") Vị trí: #{product.position}
     
     if(product.description)
-        div(class="mb-4") Mô tả: #{product.description}
+        div(class="mb-4") Mô tả: !{product.description}
 
     a(href=`${prefixAdmin}/product/edit/${product.id}` class="btn btn-warning") Chỉnh sửa
     script(src="/admin/js/product.js") 

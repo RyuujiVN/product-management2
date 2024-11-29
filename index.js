@@ -1,6 +1,7 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
+const path = require('path');
 require('dotenv').config();
 
 const route = require('./routes/client/route');
@@ -22,6 +23,9 @@ app.use(express.static(`${__dirname}/public`));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// TinyMCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
 // Override method
 app.use(methodOverride('_method'));
