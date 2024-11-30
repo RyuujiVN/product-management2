@@ -3,6 +3,7 @@ const roleRoute = require("./role-route");
 const productRoute = require("./product-route");
 const productCateRoute = require("./productcate-route");
 const accountRoute = require("./account-route");
+const authenRoute = require("./authen-route");
 const PATH_ADMIN = require("../../config/system");
 
 module.exports = (app) => {
@@ -11,4 +12,5 @@ module.exports = (app) => {
     app.use(PATH_ADMIN.prefixAdmin + "/product-category", productCateRoute);
     app.use(PATH_ADMIN.prefixAdmin + "/roles", roleRoute);
     app.use(PATH_ADMIN.prefixAdmin + "/accounts", accountRoute);
+    app.use(PATH_ADMIN.prefixAdmin + "/authen", authenRoute);
 }
