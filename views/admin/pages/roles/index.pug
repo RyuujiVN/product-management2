@@ -1,50 +1,55 @@
 extends ../../layouts/default.pug
 
 block main 
-    h1 Nhóm quyền 
 
-    div(class="card mb-3")
-        div(class="card-header") Danh sách 
-        div(class="card-body")
-            div(class="row")
-                div(class="col-8")
-                div(class="col-4 text-end")
-                    a(
-                        href=`${prefixAdmin}/roles/create`
-                        class="btn btn-outline-success"
-                    ) + Thêm mới
-            
-            table(class="table table-hover table-sm")
-                thead
-                    tr 
-                        th STT
-                        th Nhóm quyền
-                        th Mô tả ngắn
-                        th Hành động
+    if(role.permissions.includes("roles-views"))
+        h1 Nhóm quyền 
+
+        div(class="card mb-3")
+            div(class="card-header") Danh sách 
+            div(class="card-body")
+                div(class="row")
+                    div(class="col-8")
+                    div(class="col-4 text-end")
+                        if(role.permissions.includes("roles-create"))
+                            a(
+                                href=`${prefixAdmin}/roles/create`
+                                class="btn btn-outline-success"
+                            ) + Thêm mới
                 
-                tbody 
-                    if(records.length > 0)
-                        each item, index in records
-                            tr 
-                                td #{index + 1}
-                                td #{item.title}
-                                td #{item.description}
-                                td
-                                    a(
-                                        class="btn btn-secondary btn-sm"
-                                        href=`${prefixAdmin}/roles/detail/${item.id}`
-                                    ) Chi tiết
-
-                                    a(
-                                        class="btn btn-warning btn-sm"
-                                        href=`${prefixAdmin}/roles/edit/${item.id}`
-                                    ) Sửa
-
-                                    a(
-                                        class="btn btn-danger btn-sm"
-                                        href=`${prefixAdmin}/roles/delete/${item.id}`
-                                    ) Xóa
-                    
-                    else 
+                table(class="table table-hover table-sm")
+                    thead
                         tr 
-                            td(colspan="4" class="text-center") Chưa có nhóm quyền nào được chọn
+                            th STT
+                            th Nhóm quyền
+                            th Mô tả ngắn
+                            th Hành động
+                    
+                    tbody 
+                        if(records.length > 0)
+                            each item, index in records
+                                tr 
+                                    td #{index + 1}
+                                    td #{item.title}
+                                    td #{item.description}
+                                    td
+                                        a(
+                                            class="btn btn-secondary btn-sm"
+                                            href=`${prefixAdmin}/roles/detail/${item.id}`
+                                        ) Chi tiết
+
+                                        if(role.permissions.includes("roles-edit"))
+                                            a(
+                                                class="btn btn-warning btn-sm"
+                                                href=`${prefixAdmin}/roles/edit/${item.id}`
+                                            ) Sửa
+
+                                        if(role.permissions.includes("roles-delete"))
+                                            a(
+                                                class="btn btn-danger btn-sm"
+                                                href=`${prefixAdmin}/roles/delete/${item.id}`
+                                            ) Xóa
+                        
+                        else 
+                            tr 
+                                td(colspan="4" class="text-center") Chưa có nhóm quyền nào được chọn
