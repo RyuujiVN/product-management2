@@ -1,6 +1,7 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 require('dotenv').config();
 
@@ -20,6 +21,9 @@ app.set('views', `${__dirname}/views`);
 app.set('view engine', 'pug');
 
 app.use(express.static(`${__dirname}/public`));
+
+// Cookies
+app.use(cookieParser());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
