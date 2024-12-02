@@ -1,10 +1,11 @@
-const Product = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require("../../config/system");
 const createTreeHelper = require("../../helpers/createTree");
 const ProductCategory = require("../../models/product-category.model");
+const Account = require("../../models/accounts.model");
+const Product = require("../../models/product.model");
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -43,6 +44,18 @@ module.exports.index = async (req, res) => {
         .limit(pagination.limitItem)
         .skip(pagination.skip)
         .sort(sort);
+
+    for (const product of products) {
+        const user = await Account.findOne({ _id: product.createdBy.account_id });
+
+        if (user) {
+            product.accountFullName = user.fullName;
+        }
+
+        const timeDate = product.createdBy.createdAt;
+
+        product.date = new Date(timeDate).toLocaleString();
+    }
 
     const newProducts = products.map((item) => {
         item.priceNew = (item.price - item.price * item.discountPercentage / 100).toFixed(0);
@@ -102,7 +115,10 @@ module.exports.deleteProduct = async (req, res) => {
     const id = req.params.id;
     await Product.updateOne({ _id: id }, {
         deleted: true,
-        dateDeleted: new Date()
+        deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: Date
+        }
     });
     res.redirect("back");
 }
@@ -138,6 +154,9 @@ module.exports.createPost = async (req, res) => {
         newProduct.position = parseInt(newProduct.position);
     }
 
+    newProduct.createdBy = {
+        account_id: res.locals.user.id
+    }
 
     await new Product(newProduct).save();
     res.redirect(`${systemConfig.prefixAdmin}/product`);

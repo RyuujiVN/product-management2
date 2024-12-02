@@ -69,6 +69,7 @@ block main
                                 th Giá
                                 th Vị trí
                                 th Trạng thái
+                                th Người tạo
                                 th Hành động
                         
                         tbody 
@@ -104,7 +105,11 @@ block main
                                             if(item.status == "active")
                                                 div(class="badge text-bg-success") Hoạt động
                                             else 
-                                                div(class="badge text-bg-danger") Dừng hoạt động
+                                                div(class="badge text-bg-danger") Dừng hoạt động 
+
+                                    td 
+                                        p #{item.accountFullName}
+                                        p #{item.date}
                                     td 
                                         a(href=`${prefixAdmin}/product/detail/${item.id}` type="button" class="btn btn-info btn-sm me-2") Chi tiết
                                         if(role.permissions.includes("products-edit"))

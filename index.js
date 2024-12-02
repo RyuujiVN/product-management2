@@ -2,6 +2,7 @@ const express = require('express');
 const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const moment = require('moment');
 const path = require('path');
 require('dotenv').config();
 
@@ -36,6 +37,7 @@ app.use(methodOverride('_method'));
 
 // App Locals Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.moment = moment;
 
 // Routes
 route(app);
