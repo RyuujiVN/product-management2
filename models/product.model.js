@@ -26,6 +26,12 @@ const productSchema = new mongoose.Schema({
         account_id: String,
         deletedAt: Date
     },
+    updatedBy: [
+        {
+            account_id: String,
+            updatedAt: Date
+        }
+    ],
     slug: {
         type: String,
         slug: "title",
@@ -35,8 +41,6 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-}, {
-    timestamps: true
 });
 
 const Product = mongoose.model('Product', productSchema, 'product');

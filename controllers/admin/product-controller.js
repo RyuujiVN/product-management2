@@ -46,6 +46,7 @@ module.exports.index = async (req, res) => {
         .sort(sort);
 
     for (const product of products) {
+        // Lấy thông tin người tạo
         const user = await Account.findOne({ _id: product.createdBy.account_id });
 
         if (user) {
@@ -55,6 +56,17 @@ module.exports.index = async (req, res) => {
         const timeDate = product.createdBy.createdAt;
 
         product.date = new Date(timeDate).toLocaleString();
+
+        // Lấy thông tin người cập nhật gần nhất
+        const [updatedBy] = product.updatedBy.slice(-1);
+        if (updatedBy) {
+            const userUpdated = await Account.findOne({ _id: updatedBy.account_id });
+
+            updatedBy.accountFullName = userUpdated.fullName;
+            const timeDateUpdated = new Date(updatedBy.updatedAt);
+            updatedBy.date = timeDateUpdated.toLocaleString();
+        }
+
     }
 
     const newProducts = products.map((item) => {
@@ -67,7 +79,7 @@ module.exports.index = async (req, res) => {
         products: newProducts,
         filterStatus: filterStatus,
         keyword: search.keyword,
-        pagination: pagination
+        pagination: pagination,
     });
 }
 
@@ -75,7 +87,12 @@ module.exports.index = async (req, res) => {
 module.exports.changeStatus = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
-    await Product.updateOne({ _id: id }, { status: status });
+    const updated = {
+        account_id: res.locals.user.id,
+        updatedAt: Date.now()
+    }
+
+    await Product.updateOne({ _id: id }, { status: status, $push: { updatedBy: updated } });
     res.redirect("back");
 }
 
@@ -83,25 +100,33 @@ module.exports.changeStatus = async (req, res) => {
 module.exports.changeMulti = async (req, res) => {
     const type = req.body.type;
     const ids = req.body.ids.split(", ");
+    const updated = {
+        account_id: res.locals.user.id,
+        updatedAt: Date.now()
+    }
 
     switch (type) {
         case "active":
-            await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
+            await Product.updateMany({ _id: { $in: ids } }, { status: "active", $push: { updatedBy: updated } });
             break;
         case "inactive":
-            await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+            await Product.updateMany({ _id: { $in: ids } }, { status: "inactive", $push: { updatedBy: updated } });
             break;
         case "delete-all":
             await Product.updateMany({ _id: { $in: ids } }, {
                 deleted: true,
-                dateDeleted: new Date()
+                deletedBy: {
+                    account_id: res.locals.user.id,
+                    deletedAt: Date.now()
+                },
+                $push: { updatedBy: updated }
             });
             break;
         case "change-position":
             for (const item of ids) {
                 let [id, position] = item.split("-");
                 position = parseInt(position);
-                await Product.updateOne({ _id: id }, { position: position });
+                await Product.updateOne({ _id: id }, { position: position, $push: { updatedBy: updated } });
             }
             break;
         default:
@@ -197,7 +222,15 @@ module.exports.editPatch = async (req, res) => {
     newProduct.position = parseInt(newProduct.position);
 
     try {
-        await Product.updateOne({ _id: req.params.id }, newProduct);
+        const updated = {
+            account_id: res.locals.user.id,
+            updatedAt: Date.now()
+        }
+
+        await Product.updateOne({ _id: req.params.id }, {
+            ...newProduct,
+            $push: { updatedBy: updated }
+        });
     } catch (error) {
 
     }
