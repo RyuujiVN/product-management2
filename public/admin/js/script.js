@@ -110,7 +110,6 @@ if (formChangeMulti) {
                 if (type == "change-position") {
                     const position = item.closest("tr").querySelector("input[name='position']").value;
                     ids.push(`${id}-${position}`);
-                    console.log(`${id}-${position}`);
                 }
                 else {
                     ids.push(id);

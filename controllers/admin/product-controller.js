@@ -3,6 +3,9 @@ const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require("../../config/system");
 const createTreeHelper = require("../../helpers/createTree");
+const productHelper = require("../../helpers/products");
+
+
 const ProductCategory = require("../../models/product-category.model");
 const Account = require("../../models/accounts.model");
 const Product = require("../../models/product.model");
@@ -69,10 +72,7 @@ module.exports.index = async (req, res) => {
 
     }
 
-    const newProducts = products.map((item) => {
-        item.priceNew = (item.price - item.price * item.discountPercentage / 100).toFixed(0);
-        return item;
-    });
+    const newProducts = productHelper.productNew(products);
 
     res.render("admin/pages/product/index", {
         pageTitle: "Trang sản phẩm",
@@ -165,26 +165,34 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
-    const newProduct = req.body;
+    const permissions = res.locals.role.permissions;
 
-    newProduct.price = parseInt(newProduct.price);
-    newProduct.discountPercentage = parseInt(newProduct.discountPercentage);
-    newProduct.stock = parseInt(newProduct.stock);
+    if (permissions.includes("products-create")) {
+        const newProduct = req.body;
 
-    if (newProduct.position == "") {
-        const quantity = await Product.countDocuments();
-        newProduct.position = quantity + 1;
+        newProduct.price = parseInt(newProduct.price);
+        newProduct.discountPercentage = parseInt(newProduct.discountPercentage);
+        newProduct.stock = parseInt(newProduct.stock);
+
+        if (newProduct.position == "") {
+            const quantity = await Product.countDocuments();
+            newProduct.position = quantity + 1;
+        }
+        else {
+            newProduct.position = parseInt(newProduct.position);
+        }
+
+        newProduct.createdBy = {
+            account_id: res.locals.user.id
+        }
+
+        await new Product(newProduct).save();
+        res.redirect(`${systemConfig.prefixAdmin}/product`);
     }
     else {
-        newProduct.position = parseInt(newProduct.position);
+        res.send("404");
+        return;
     }
-
-    newProduct.createdBy = {
-        account_id: res.locals.user.id
-    }
-
-    await new Product(newProduct).save();
-    res.redirect(`${systemConfig.prefixAdmin}/product`);
 }
 
 // [GET] /admin/edit/:id

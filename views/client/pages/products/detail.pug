@@ -39,4 +39,11 @@ block main
                 if(product.description)
                     div(class="mb-4") Mô tả: #{product.description}
 
-                a(href=`${prefixAdmin}/product/edit/${product.id}` class="btn btn-warning") Chỉnh sửa
+                form(action=`/cart/add/${product.id}`, method="POST") 
+                    input(
+                        type="number"
+                        name="quantity"
+                        value=1
+                        min=1
+                    )
+                    button(type="submit" class="btn btn-info") Thêm vào giỏ hàng

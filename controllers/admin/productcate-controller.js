@@ -25,7 +25,6 @@ module.exports.index = async (req, res) => {
 
 // [GET] /admin/product-category/create
 module.exports.create = async (req, res) => {
-    console.log
     const find = {
         deleted: false
     };
