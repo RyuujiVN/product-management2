@@ -33,3 +33,10 @@ header(class="header")
                         +sub-menu(productCategory, path)
                     li 
                         a(href="/cart") Giỏ hàng (#{minicart ? minicart.totalQuantity : 0})
+                    if(user)
+                        li 
+                            a(href="/user/logout") Đăng xuất
+                    else
+                        li
+                            a(href="/user/login") Đăng nhập
+                            a(href="/user/register") Đăng ký
