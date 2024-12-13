@@ -1,0 +1,55 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+    div(class="container my-3")
+        div(class="row")
+            div(class="col-12")
+                +box-head("Đặt hàng thành công")
+
+        if(order)
+            div(class="row")
+                div(class="col-12")
+                    h4(class="mb-2") Thông tin cá nhân 
+                    table(class="table table-bordered")
+                        tbody 
+                            tr 
+                                td Họ tên
+                                td 
+                                    b #{order.userInfo.fullName}
+                            
+                            tr 
+                                td Số điện thoại
+                                td 
+                                    b #{order.userInfo.phone}
+
+                            tr 
+                                td Địa chỉ
+                                td 
+                                    b #{order.userInfo.address}
+
+            div(class="row")
+                div(class="col-12")
+                    h4(class="mb-2") Thông tin đơn hàng
+                    table(class="table table-bordered")
+                        thead 
+                            tr 
+                                th STT
+                                th Ảnh
+                                th Tên
+                                th Giá
+                                th Số lượng
+                                th Tổng tiền
+                        tbody 
+                            each product, index in order.products 
+                                tr 
+                                    td #{index + 1}
+                                    td(class="text-center")
+                                        img(src=product.productInfo.thumbnail, alt=product.productInfo.title width="100px")
+                                    td #{product.productInfo.title}
+                                    td #{product.priceNew}$
+                                    td #{product.quantity}
+                                    td #{product.totalPrice}$
+
+            div(class="col-12 text-end") 
+                h3 Tổng đơn hàng: #{order.totalPrice}$
